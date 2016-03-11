@@ -92,8 +92,9 @@ namespace BouncingSquare
             _form = frm;
             _rnd = rnd;
             Size size = new Size(100, 20);
+            _box.Size = size;
             Int32 x = (_form.Width / 2) - (_box.Width / 2);
-            Int32 y = _form.Height - _box.Height;
+            Int32 y = _form.Height - _box.Height-25;
             Point location = new Point(x,y);
             _box.Location = location;
             _box.BackColor = Color.White;

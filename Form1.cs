@@ -52,7 +52,7 @@ namespace BouncingSquare
             }
             else if(e.KeyData == Keys.N)
             {
-                Square square = new Square(this, rRand, paddle, pictures);
+                Square square = new Square(this, rRand, paddle, lblScore, pictures);
                 iCount++;
                 lblSquareCount.Text = iCount.ToString();
             }

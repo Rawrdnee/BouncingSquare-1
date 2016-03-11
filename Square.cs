@@ -18,10 +18,10 @@ namespace BouncingSquare
         private int _xDir = 0;
         private int _yDir = 0;
         private Random _rnd = null;
-        private Image _explosion = null;
-        private Timer _tmrExplosion = null;
         private Paddle _paddle = null;
+        private Label _lblScore = null;
         private List<PictureBox> _hearts = null;
+        private Int32 _value = 0;
         #endregion
 
         #region Public Properties
@@ -61,12 +61,17 @@ namespace BouncingSquare
             {
                 if(_hearts.Count > 0)
                 {
-                    PictureBox pbHeart = _hearts[_hearts.Count-1];
+                    PictureBox pbHeart = _hearts[_hearts.Count - 1];
                     pbHeart.Visible = false;
+                    _hearts.RemoveAt(_hearts.Count - 1);
                     _hearts.TrimExcess();
                 }
                 // this gets rid of "this" square
                 Dispose();
+                // change the score
+                Int32 score = Convert.ToInt32(_lblScore.Text);
+                score -= _value;
+                _lblScore.Text = score.ToString();
             }
             // causes the square to change directions once it hits the edges of the screen
             else if (location.Y <= 0)
@@ -85,6 +90,10 @@ namespace BouncingSquare
             else if (_paddle.Box.Bounds.IntersectsWith(_box.Bounds))
             {
                 _yDir = -yDir;
+                // change the score
+                Int32 score = Convert.ToInt32(_lblScore.Text);
+                score += _value;
+                _lblScore.Text = score.ToString();
             }
 
             
@@ -97,28 +106,27 @@ namespace BouncingSquare
             Move();
         }
 
-        private void _tmrExplosion_Tick(object sender, EventArgs e)
-        {
-            _tmrExplosion.Enabled = false;
-            Dispose();
-        }
+
         #endregion
 
         #region Construction
-        public Square(Form frm, Random rnd, Paddle paddle, List<PictureBox> hearts)
+        public Square(Form frm, Random rnd, Paddle paddle, Label lbl, List<PictureBox> hearts)
         {
             // use the label for a picture? (the heart)
             _hearts = hearts;
+            _value = rnd.Next(0,6);
+            _lblScore = lbl;
             _paddle = paddle;
-            _tmrExplosion = new Timer();
-            _tmrExplosion.Interval = 5000;
-            _tmrExplosion.Tick += _tmrExplosion_Tick;
             _rnd = rnd;
             _form = frm;
             _box = new PictureBox();
-            _box.Width = _rnd.Next(10, 50);
-            _box.Height = _rnd.Next(10, 50);
-            _box.BackColor = Color.FromArgb(_rnd.Next(0, 256), _rnd.Next(0, 256), _rnd.Next(0, 256));
+
+            _box.Paint += _box_Paint;
+
+            _box.Width = 30;
+            _box.Height = 30;
+
+            _box.BackColor = Color.White;
             Point location = new Point();
 
             location.X = _rnd.Next(0, _form.Width - _box.Width);
@@ -142,9 +150,17 @@ namespace BouncingSquare
             } while (_yDir == 0);
 
             _form.Controls.Add(_box);
-            Bitmap bmp = new Bitmap("Images/Explode.gif");
-            _explosion = bmp;
-            _id = Guid.NewGuid();
+        }
+
+        private void _box_Paint(object sender, PaintEventArgs e)
+        {
+            // disposes of the "font" once the last curly brace is hit
+            // cleans it out of memory instead of calling Dispose()
+            // and then waiting for garbage collection
+            using (Font myFont = new Font("Arial", 14))
+            {
+                e.Graphics.DrawString(_value.ToString(), myFont, Brushes.Green, new Point(6, 5));
+            }
         }
 
 
@@ -161,7 +177,6 @@ namespace BouncingSquare
                 {
                     _timer.Enabled = false;
                     _box.Dispose();
-                    _explosion = null;
                     _form.Controls.Remove(_box);
                     _form = null;
                     _rnd = null;

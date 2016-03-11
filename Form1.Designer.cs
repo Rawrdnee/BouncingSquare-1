@@ -34,6 +34,7 @@
             this.pbHeart1 = new System.Windows.Forms.PictureBox();
             this.pbHeart2 = new System.Windows.Forms.PictureBox();
             this.pbHeart3 = new System.Windows.Forms.PictureBox();
+            this.lblScore = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbHeart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbHeart2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbHeart3)).BeginInit();
@@ -88,6 +89,17 @@
             this.pbHeart3.TabIndex = 5;
             this.pbHeart3.TabStop = false;
             // 
+            // lblScore
+            // 
+            this.lblScore.AutoSize = true;
+            this.lblScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F);
+            this.lblScore.ForeColor = System.Drawing.Color.White;
+            this.lblScore.Location = new System.Drawing.Point(31, 126);
+            this.lblScore.Name = "lblScore";
+            this.lblScore.Size = new System.Drawing.Size(42, 46);
+            this.lblScore.TabIndex = 6;
+            this.lblScore.Text = "0";
+            // 
             // frmBouncingSquare
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -95,6 +107,7 @@
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(605, 424);
             this.ControlBox = false;
+            this.Controls.Add(this.lblScore);
             this.Controls.Add(this.pbHeart3);
             this.Controls.Add(this.pbHeart2);
             this.Controls.Add(this.pbHeart1);
@@ -118,6 +131,7 @@
         private System.Windows.Forms.PictureBox pbHeart1;
         private System.Windows.Forms.PictureBox pbHeart2;
         private System.Windows.Forms.PictureBox pbHeart3;
+        private System.Windows.Forms.Label lblScore;
     }
 }
 
